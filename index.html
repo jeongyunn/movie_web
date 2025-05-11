@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>북적북적 영화</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <script>
+      Kakao.init('23687aaff1981f209f10f41f6f37ff31');
+      console.log(Kakao.isInitialized()); // SDK 초기화 여부 확인 (true면 성공)
+    </script>
+</head>
+<body>
+    <h1>북적북적 영화</h1>
+    <p>북적북적 영화 웹 페이지 입니다. 로그인 후 이용해 주세요.</p>
+    <div class="login-buttons">
+      <button id="kakao-login-btn">카카오 로그인</button>
+      <button id="google-login-btn">구글 로그인</button>
+    </div>
+    <nav style="display: none;">
+      <ul>
+        <li><a href="mypage.html">마이페이지</a></li>
+        <li><a href="search.html">영화 검색 및 기록</a></li>
+        <li><a href="library.html">책장</a></li>
+      </ul>
+    </nav>
+    <div id="app">
+        </div>
+    <script src="script.js"></script>
+    <script src="https://accounts.google.com/gsi/client"></script>
+    <script>
+      function handleCredentialResponse(response) {
+        console.log("Encoded JWT ID token: " + response.credential);
+        // 여기서 백엔드로 JWT 토큰을 보내서 사용자 정보를 검증하고 로그인 처리
+      }
+      window.onload = function () {
+        google.accounts.id.initialize({
+          client_id: '403533820879-ec84mlvc65itk5kemounmemmak7729tq.apps.googleusercontent.com',
+          callback: handleCredentialResponse
+        });
+        google.accounts.id.renderButton(
+          document.getElementById("google-login-btn"),
+          { theme: "outline", size: "large" }  // 사용자 지정
+        );
+        google.accounts.id.prompt(); // 자동 로그인 UI 표시 (선택 사항)
+      };
+</script>
+</body>
+</html>
