@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>영화 검색 및 기록</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>북적북적 영화</h1>
+        <nav>
+            <ul>
+                <li><a href="mypage.html">마이페이지</a></li>
+                <li><a href="search.html" class="active">영화 검색 및 기록</a></li>
+                <li><a href="library.html">책장</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>영화 검색</h2>
+        <div class="search-area">
+            <input type="text" placeholder="영화 제목을 검색하세요">
+            <button>검색</button>
+        </div>
+        <div class="search-results">
+            </div>
+        <h2>영화 기록</h2>
+        <div class="record-area">
+            <h3>기록할 영화</h3>
+            <div class="movie-info">
+                </div>
+            <div class="rating-area">
+                <label for="rating">별점:</label>
+                <select id="rating">
+                    <option value="5">★★★★★</option>
+                    <option value="4">★★★★</option>
+                    <option value="3">★★★</option>
+                    <option value="2">★★</option>
+                    <option value="1">★</option>
+                </select>
+            </div>
+            <div class="memo-area">
+                <label for="memo">메모:</label><br>
+                <textarea id="memo" rows="5"></textarea>
+            </div>
+            <button>기록 저장</button>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 북적북적 영화</p>
+    </footer>
+</body>
+</html>
