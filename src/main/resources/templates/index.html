@@ -28,12 +28,68 @@
     <div id="app">
         </div>
     <script src="script.js"></script>
+    <script>
+      // Kakao SDK 초기화는 이미 <head> 태그 안에서 완료되었습니다.
+    
+      // 카카오 로그인 버튼 클릭 이벤트 리스너
+      document.getElementById('kakao-login-btn').addEventListener('click', () => {
+        Kakao.Auth.login({
+          success: function(authObj) {
+            console.log(authObj); // 로그인 성공 시 Access Token 등 정보 확인
+    
+            const kakaoAuthEndpoint = '/api/auth/kakao';
+            const accessToken = authObj.access_token; // Access Token 추출
+    
+            fetch(kakaoAuthEndpoint, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ accessToken: accessToken })
+            })
+            .then(response => response.text())
+            .then(data => {
+              console.log('카카오 로그인 응답:', data);
+              // TODO: 로그인 성공 후 처리 (예: 페이지 리다이렉션, UI 업데이트)
+            })
+            .catch(error => {
+              console.error('카카오 로그인 요청 실패:', error);
+              // TODO: 에러 처리
+            });
+          },
+          fail: function(err) {
+            console.error(err);
+          }
+        });
+      });
+    </script>
     <script src="https://accounts.google.com/gsi/client"></script>
     <script>
       function handleCredentialResponse(response) {
         console.log("Encoded JWT ID token: " + response.credential);
-        // 여기서 백엔드로 JWT 토큰을 보내서 사용자 정보를 검증하고 로그인 처리
+
+        // 백엔드 API 엔드포인트
+        const googleAuthEndpoint = '/api/auth/google';
+
+        // JWT 토큰을 서버로 전송
+        fetch(googleAuthEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ credential: response.credential })
+        })
+        .then(response => response.text())
+        .then(data => {
+          console.log('Google 로그인 응답:', data);
+          // TODO: 로그인 성공 후 처리 (예: 페이지 리다이렉션, UI 업데이트)
+        })
+        .catch(error => {
+          console.error('Google 로그인 요청 실패:', error);
+          // TODO: 에러 처리
+        });
       }
+
       window.onload = function () {
         google.accounts.id.initialize({
           client_id: '403533820879-ec84mlvc65itk5kemounmemmak7729tq.apps.googleusercontent.com',
