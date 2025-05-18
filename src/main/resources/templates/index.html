@@ -18,6 +18,13 @@
       <button id="kakao-login-btn">카카오 로그인</button>
       <button id="google-login-btn">구글 로그인</button>
     </div>
+    <div>
+      <h2>영화 검색</h2>
+      <input type="text" id="search-query" placeholder="영화 제목을 입력하세요">
+      <button id="search-button">검색</button>
+      <div id="search-results">
+          </div>
+    </div>
     <nav style="display: none;">
       <ul>
         <li><a href="mypage.html">마이페이지</a></li>
@@ -61,6 +68,43 @@
             console.error(err);
           }
         });
+      });
+      document.addEventListener('DOMContentLoaded', () => {
+          const searchButton = document.getElementById('search-button');
+          const searchInput = document.getElementById('search-query');
+          const searchResultsDiv = document.getElementById('search-results');
+
+          searchButton.addEventListener('click', () => {
+              const query = searchInput.value;
+              if (query) {
+                  fetch(`/api/search/movies?query=${query}`)
+                      .then(response => response.json())
+                      .then(data => {
+                          searchResultsDiv.innerHTML = ''; // 이전 결과 지우기
+                          if (data && data.length > 0) {
+                              data.forEach(movie => {
+                                  const movieElement = document.createElement('div');
+                                  movieElement.innerHTML = `
+                                      <h3>${movie.title}</h3>
+                                      <p>개봉일: ${movie.releaseDate}</p>
+                                      <p>${movie.overview}</p>
+                                      ${movie.posterPath ? `<img src="https://image.tmdb.org/t/p/w200${movie.posterPath}" alt="포스터">` : '<p>포스터 이미지 없음</p>'}
+                                      <hr>
+                                  `;
+                                  searchResultsDiv.appendChild(movieElement);
+                              });
+                          } else {
+                              searchResultsDiv.innerText = '검색 결과가 없습니다.';
+                          }
+                      })
+                      .catch(error => {
+                          console.error('영화 검색 API 호출 실패:', error);
+                          searchResultsDiv.innerText = '영화 검색에 실패했습니다.';
+                      });
+              } else {
+                  searchResultsDiv.innerText = '검색어를 입력해주세요.';
+              }
+          });
       });
     </script>
     <script src="https://accounts.google.com/gsi/client"></script>
